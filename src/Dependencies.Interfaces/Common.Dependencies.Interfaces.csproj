@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <AssemblyName>Peereflits.Shared.Dependencies.Interfaces</AssemblyName>
+    <RootNamespace>Peereflits.Shared.Dependencies</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ApplicationIcon>..\Solution Items\favicon.ico</ApplicationIcon>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Peereflits</Authors>
+    <Copyright>No Copyright ©, The Netherlands</Copyright>
+    <Description>Peereflits.Shared.Dependencies.Extensions is an extension library for working with DI.</Description>
+    <Product>Peereflits.Shared.Dependencies</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageIcon>PackageIcon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/peereflits/Shared.Dependencies.git?path=%2FREADME.md&amp;_a=preview</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/peereflits/Shared.Dependencies.git</RepositoryUrl>
+    <Title>Peereflits.Shared.Dependencies.Extensions package</Title>
+    <PackageDescription>
+Peereflits.Shared.Dependencies.Interfaces is an interface library for working with DI.
+This component is a shared infrastructure library of Peereflits.
+    </PackageDescription>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+    <Content Include="..\Solution Items\PackageIcon.png" Link="Properties\PackageIcon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
