@@ -1,0 +1,5 @@
+### Custom ignored files
+
+# Draw.io backup files
+*.bkp
+*.dtmp

@@ -1,104 +1,217 @@
 ![Logo](./img/peereflits-logo.png) 
 
-# Peereflits.Shared.Dependencies #
-
-This repository contains the solution and a projects of `Peereflits.Shared.Dependencies`.
-
-These components are a part of the infrastructural libraries of *Peereflits.Shared*.
+# Peereflits.Shared.Dependencies
 
 
-## Goal
+[Inversion of control](https://en.wikipedia.org/wiki/Inversion_of_control) is one of the five [SOLID](https://en.wikipedia.org/wiki/SOLID) principles and is deemed so important that the .NET framework has its own [DI (Dependency Inversion)](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection) container. However, there is a "gotcha" in this DI: when an application is set up in multiple assemblies (multiple layers), all types (classes & interfaces) that are not in the host project must be defined as `public`. Otherwise they cannot be registered in the .NET DI container (`Microsoft.Extensions.DependencyInjection`) of the host (eg an ASP&#46;NET app). The host (of the DI container) must be able to resolve all types.
 
-You build an application that has multiple projects within a VS solution. And as you try to apply the adagium "program agains abstractions, not concretions" [Uncle Bob] all your implementations expose an interface.
-Now asp.net has default a dependency injection system built in.
+The idea behind *Peereflits.Shared.Dependencies* is that the registration of types in the .NET DI container, and possible validation of these registrations, is simplified within a multi-layered application without the dependencies being leaked.
 
-![Application Layout](./img/ApplicationLayout.png)
+See the following as the basic design of an application architecture:
 
+![Basic setup of an application architecture](./docs/Peereflits.Shared.Dependencies-Basic%20Architecture.png)
+*Basic design of application architecture*
 
-The main goal of this project is to abstract dependency injection (DI) and validation and prevent that every project that uses DI need a dependency on/package reference to ``Microsoft.Extensions.DependencyInjection``.
+If a host (Api) wants to register all types at startup (`Startup.cs`, or `Program.cs` in minimal APIs), then all types in *Logic Domain*-Implementation & -Interfaces must be `public` are. This is undesirable as it violates one of the "[tenets of object orientation](https://codingarchitect.wordpress.com/2006/09/27/four-tenets-of-oop/)" and/or [coding guidelines](https://csharpcodingguidelines.com/maintainability-guidelines/#AV1501).
 
--- to be continued
+> **Note:** Including an `InternalsVisibleTo(...)` attribute in the host as a workaround is of course also a violation of the OOP principle "encapsultation". The intended usage of this attribute is to unit test internal classes.
 
-## Solution and projects
+*Peereflits.Shared.Dependencies* can solve this problem. It can register internal classes and interfaces and make it available to a host with respect to the access modifiers op the defined types. *Peereflits.Shared.Dependencies* consists of two packages:
+1. *Peereflits.Shared.Dependencies.Interfaces* defines a lightweight API that allows registration of types and validations of registration. This is used in implementation projects;
+1. *Peereflits.Shared.Dependencies.Extensions* is only used in the host project. It contains a number of extension methods that allow the registered types to be included in the .NET DI container.
 
-The solution has the following projects:
+The *Peereflits.Shared.Dependencies.Interfaces* api looks like this:
 
-1. **Common.Dependencies.Interfaces**: an interface + types library.
-   - Target Frameworks: net6.0, net7.0
-   - AssemblyName: Peereflits.Shared.Dependencies.Interfaces
-   - RootNamespace: Peereflits.Shared.Dependencies
-   - Project References
-      - None
-   - Package References
-      - None
+[![](https://mermaid.ink/img/pako:eNqlUstqwzAQ_BWhU0seH2BCoNAEDA2UpEdDUaR1qiJLRlqlDWn87ZVkmwRT95KTVrPS7Mzunik3AmhGuWLOPUt2sKwqdLqR_NWaoxTwdqphCwfp0DKURrtzoQlZLKRGsCXjsFxGYLL6Bu4RHh5JvtK-Asv2Cprh76bQl77CMJeIJxEleU9-hXZgj7ID1l7zJu-QTqd9N_tP4NiQvKoVVKAxsa4ZR2NP6d-LLAFlBaQPbtT0UGcPWg-RoTW4k_qgAI2ephs3NYgU5toh07zlGnqaz5fXWqMtXfzMZkNwrEtbr2C0U3tjFNl4hTK0oBfmnpQyXyBuzI4pieT3DTgytEP-t8ZfjmOCTmlgrpgUYS2TkILiR5hmQbMQCihZcFfQUCE8ZR7N7qQ5zdB6mFJfC4bQLTLNSqZcQEHIsAGbbtXjcfkFN4gb3Q?type=png)](https://mermaid.live/edit#pako:eNqlUstqwzAQ_BWhU0seH2BCoNAEDA2UpEdDUaR1qiJLRlqlDWn87ZVkmwRT95KTVrPS7Mzunik3AmhGuWLOPUt2sKwqdLqR_NWaoxTwdqphCwfp0DKURrtzoQlZLKRGsCXjsFxGYLL6Bu4RHh5JvtK-Asv2Cprh76bQl77CMJeIJxEleU9-hXZgj7ID1l7zJu-QTqd9N_tP4NiQvKoVVKAxsa4ZR2NP6d-LLAFlBaQPbtT0UGcPWg-RoTW4k_qgAI2ephs3NYgU5toh07zlGnqaz5fXWqMtXfzMZkNwrEtbr2C0U3tjFNl4hTK0oBfmnpQyXyBuzI4pieT3DTgytEP-t8ZfjmOCTmlgrpgUYS2TkILiR5hmQbMQCihZcFfQUCE8ZR7N7qQ5zdB6mFJfC4bQLTLNSqZcQEHIsAGbbtXjcfkFN4gb3Q)
 
-1. **Common.Dependencies.Extensions**: the implementation library of `Common.Dependencies.Interfaces`.
-   - Target Frameworks: net6.0, net7.0
-   - AssemblyName: Peereflits.Shared.Dependencies.Interfaces
-   - RootNamespace: Peereflits.Shared.Dependencies
-   - Project References
-      - `Common.Dependencies.Interfaces`
-   - Package References
-      - `Microsoft.Extensions.DependencyInjection.Abstractions`
+Where as
+1. `IProvideTypeRegistrations` + `TypeRegistration` take care of the *DI registration definition*;
+1. `IProvideTypeRegistrationRules` + `TypeRegistrationRule` take care of the *DI registration validation*.
 
-1. **Common.Dependencies.Extensions.Tests**: the unit tests of `Common.Dependencies.Extensions`.
-   - Target Frameworks: net6.0, net7.0
-   - AssemblyName: Peereflits.Shared.Dependencies.Extensions
-   - RootNamespace: Peereflits.Shared.Dependencies.Extensions
-   - Project References
-      - `Common.Dependencies.Extensions`
-   - Package References
-      - Several unittest framework libraries
+To use the DI registration definition, each implementation assembly (Logic Domain) must define a `public class` that implements `IProvideTypeRegistrations`. For DI registration validation, there must be a `public class` in each implementation assembly that implements `IProvideTypeRegistrationRules`.
 
+>**Tip:** Use as convention for the DI registration definition `TypeRegistrations` and for the DI registration validation `TypeRegistrationRules`.
 
-## Examples
+In the Host (Services&#46;Api) there should be an (internal) `class` that collects all type registration definitions (of all projects). This class also implements `IProvideTypeRegistrations`. Likewise, there should be an (internal) `class` that collects all type registration validations (of all projects). This class implements `IProvideTypeRegistrationRules`.
 
-Recommend usage of this DI package is as follows: 
+In the startup of the application (Api), the extension method 'AddTypeRegistrations' (with the class of the collected type registration definitions) can be called on the `IServiceCollection`; this adds the type registrations to the .Net DI container.
 
-1. Each implementation project should have a ``TypeRegistrations`` class where all types of that project are registered, like: 
+Then the extension method `Validate` (with the class of the collected type registration validations) can be called on the `IServiceCollection`; it validates that all interface types included in this list are actually registered in the .Net DI container.
+
+>**Tip:** Use the convention for the collected DI registration definitions `TypeRegistrationsResolver` and for the collected DI registration validation use `TypeRegistrationRulesResolver`.
+
+If during the validation process an interface is found that has no implementation, an `UnregisteredTypeException` is thrown. Also a `MultipleTypeRegistrationsException` may be thrown. This happens when an implementation of an interface is found multiple times while only allowing one implementation (this is the default behavior). The host/Api then already fails during boot; so even during a debug session. This way, type registration errors are detected early.
+
+> **Note:** It is important that `Validate` is called *after* `AddTypeRegistrations`.
+
+## Implementation example
+
+In the example below, the starting point is that only the public interfaces needed in the host are included in a separate project (as in `Logic.Domain.Interfaces`). This project has no external dependencies to other projects or external libraries and only contains types from the BCL (preferably only POCOs or DTOs with primitive types). The "Implementation" contains all the logic for executing the domain logic where the own (internal) services also implement their own interface (which also makes unit testing easier).
+
+Example:
+
+in *MyOwn.Logic.Domain.Interfaces.dll*
+
 ```` csharp
+namespace MyOwn.Logic.Domain;
+
+public interface IGetUser
+{
+   UserDto Execute(Guid id);
+}
+
+public class UserDto
+{
+   public Guid Id { get; set; }
+   public string FullName { get; set; }
+}
+````
+
+in *MyOwn.Logic.Domain.dll*
+
+```` csharp
+namespace MyOwn.Logic.Domain;
+
+internal interface IRepository<T>
+{
+   T GetById(id);
+}
+
+internal class UserEntity
+{
+   public Guid UserId { get; set; }
+   public string FirstName { get; set; }
+   public string LastName { get; set; }
+}
+
+internal class Repository<UserEntity> : IRepository<UserEntity>
+{
+   private readonly IDatabaseContext context;
+   public Repository(IDatabaseContext context) => this.context = context;
+   /* implementation ommited for brevity */
+}
+
+internal interface IMapper
+{
+   UserDto MapUser(UserEntity instance);
+}
+
+internal class Mapper: IMapper
+{
+   public UserDto MapUser(UserEntity instance) { ... }
+}
+
+internal class GetUserQuery : IGetUser
+{
+     private readonly IRepository<UserEntity> repository;
+     private readonly IMapper mapper;
+
+     public GetUserQuery
+     (
+        IRepository<UserEntity> repository,
+        IMapper mapper
+     )
+     {
+      
+       this.repository = repository;
+       this.mapper = mapper;
+     }
+
+     public UserDto Execute(Guid id)
+     {
+        var entity = repository.GetById(id);
+        return mapper.MapUser(entity);
+     }
+}
+````
+
+The (internal) types of the domain layer can be registered in the host by implementing the `IProvideTypeRegistrations` interface in a public class (called `TypeRegistrations` by convention), like the following:
+
+in *MyOwn.Logic.Domain.dll*
+
+```` csharp
+namespace MyOwn.Logic.Domain;
+
 public class TypeRegistrations : IProvideTypeRegistrations
 {
-    public IEnumerable<TypeRegistration> Execute() 
-        => new List<TypeRegistration>
-        {
-            // all interfaces and its implemtations should be registerred here.
-            new TypeRegistration<IMyService, MyService>(Lifetime.Scoped),
-            new TypeRegistration<IMyService>(() => { ...put your factory here... }, Lifetime.Scoped),
-        };
+     private readonly List<TypeRegistration> registrations = new List<TypeRegistration>
+                      {
+                          new TypeRegistration<IRepository<UserEntity>, Repository<UserEntity>>(Lifetime.Scoped),
+                          new TypeRegistration<IGetUser, GetUserQuery>(Lifetime.Scoped),
+                          new TypeRegistration<IMapper, Mapper>(Lifetime.Singleton),
+                      };
+
+     public IEnumerable<TypeRegistration> Execute() => registrations;
 }
 ````
 
-2. Each implementation project should also have a ``TypeRegistrationRules`` class where all defined interfaces are listed this project depends on, like
+The `TypeRegistrationRules` are intended to define which types *must* be registered for all logic to function. All interfaces from the `TypeRegistrations` could be included here, but the added value mainly lies in the recording of external dependencies (types from other projects or packages). So these are the interface types that <u>have no implementation</u> in *MyOwn.Logic.Domain.dll* but are <u>used</u> by services (consumed by classes) in *MyOwn .Logic.Domain.dll*. This becomes especially useful when using a [Hexagonal Architecture](http://alistair.cockburn.us/Hexagonal+architecture).
+
+**Note:** Hexagonal Architecture is also referred to as "Onion Architecture". See [part 1](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/), [part 2](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-2/), [part 3](https://jeffreypalermo.com/2008/08/the-onion-architecture-part-3/) and [part 4](https://jeffreypalermo.com/2013/08/onion-architecture-part-4-after-four-years/) by Jeffrey Palermo, or this article on [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [Common web application architectures](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture). In the illustration *Basic Application Architecture Setup*, *Infrastructure* (DTOs and Interfaces) is an example of this where it is defined in *Shared* while the host (Api) provides the implementation.
+
+In the above code example there is no implementation of `IDatabaseContext` in *MyOwn.Logic.Domain.dll*; it comes from a different package. Since the `Repository<UserEntity>` implementation *does* depend on this interface, an instance must be available at runtime. This is enforced by explicitly including this dependecy in the `TypeRegistrationRules`:
+
+in *MyOwn.Logic.Domain.dll*
+
 ```` csharp
-public class TypeRegistrationRules : IProvideTypeRegistrationRules
+internal class TypeRegistrationRules : IProvideTypeRegistrationRules
 {
-    public IEnumerable<TypeRegistrationRule> Execute() 
-        => new List<TypeRegistrationRule>
-            {
-                new TypeRegistrationRule<IMyService>(),
-            };
-}
+    private readonly List<TypeRegistrationRule> rules = new List<TypeRegistrationRule>
+                     {
+                         new TypeRegistrationRule<IRepository<UsUserEntityer>>(),
+                         new TypeRegistrationRule<IGetUser>(),
+                         new TypeRegistrationRule<IMapper>(),
+                         new TypeRegistrationRule<IDatabaseContext>() // This type is NOT in this assembly
+                     };
+
+    public IEnumerable<TypeRegistrationRule> Execute() => rules;
+}	
 ````
-The catch is, that you should also register here the interfaces the project depends on for witch it can't provide an implementation. 
-There are cases where you can't know what an implementation will provide; it is information only a host or separate implementor knows when it uses your package.
 
-The number of items in a list of type registration rules always equals or is larger than the list of type registrations.
+Everything must now be knitted together in the host/Api. The Api probably also has a number of own (internal) services that are registered in a `TypeRegistrations` and `TypeRegistrationRules` (in the namespace `MyOwn.Services.Api`). Therefore, the host has the following four types:
+1. `TypeRegistrations`: the DI registration definition of the (internal) services in the host;
+1. `TypeRegistrationRules`: the DI registration validation of the (internal) services in the host;
+1. `TypeRegistrationsResolver`: the collected DI registration definitions;
+1. `TypeRegistrationRulesResolver`: the collected DI registration validations.
 
-3. In a host project there should be a ``TypeRegistrationResolver`` and a ``TypeRegistrationRulesResolver`` referencing all Common packages needed by the host, like:
-```` csharp
-internal class TypeRegistrationResolver : IProvideTypeRegistrations
+in *MyOwn.Services.Api.dll*
+
+``` csharp
+namespace MyOwn.Services.Api;
+
+public class TypeRegistrations : IProvideTypeRegistrations
+{
+    private readonly List<TypeRegistration> registrations = new List<TypeRegistration>
+                     {
+                         new TypeRegistration<IMapDtoToModel, toToModelMapper>(Lifetime.Scoped),
+                         ... other Api type registrations
+                     };
+
+    public IEnumerable<TypeRegistration> Execute() => registrations;
+}
+
+internal class TypeRegistrationRules : IProvideTypeRegistrationRules
+{
+    private readonly List<TypeRegistrationRule> rules = new List<TypeRegistrationRule>
+                     {
+                         new TypeRegistrationRule<IMapDtoToModel>(),
+                         ... other Api type registration rules
+                     };
+
+    public IEnumerable<TypeRegistrationRule> Execute() => rules;
+}	
+
+internal class TypeRegistrationsResolver : IProvideTypeRegistrations
 {
     public IEnumerable<TypeRegistration> Execute()
     {
         var registrations = new List<IProvideTypeRegistrations>
-                                {
-                                    new Logic.Domain.One.TypeRegistrations(),
-                                    new Logic.Domain.Two.TypeRegistrations(),
-                                    new MyProject.TypeRegistrations()
-                                };
+                            {
+                                new MyOwn.Logic.Domain.TypeRegistrations(),
+                                new MyOwn.Services.Api.TypeRegistrations()
+                            };
 
-        return new List<TypeRegistration>(registrations.SelectMany(x => x.Execute()));
+        return registrations.SelectMany(x=>x.Execute()).ToList();
     }
 }
 
@@ -106,23 +219,78 @@ internal class TypeRegistrationRulesResolver : IProvideTypeRegistrationRules
 {
     public IEnumerable<TypeRegistrationRule> Execute()
     {
-        var providers = new List<IProvideTypeRegistrationRules>
-                                {
-                                    new Logic.Domain.One.TypeRegistrationRules(),
-                                    new Logic.Domain.Two.TypeRegistrationRules(),
-                                    new MyProject.TypeRegistrationRules()
-                                };
+        var rules = new List<IProvideTypeRegistrationRules>
+                        {
+                            new MyOwn.Logic.Domain.TypeRegistrationRules(),
+                            new MyOwn.Services.Api.TypeRegistrationRules()
+                        };
 
-        return new List<TypeRegistrationRule>(providers.SelectMany(x => x.Execute()));
+        return rules.SelectMany(x=>x.Execute()).ToList();
     }
 }
-````
 
-4. In the ``Startup`` class of the host in ``void ConfigureServices(IServiceCollection services)`` you can add these two lines that ties it all together:
-```` csharp
-    services.TypeRegistrations<TypeRegistrationResolver>()
-            .Validate<TypeRegistrationRulesResolver>();
-````
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        /* Configure other services, behaviours and dependencies */
+        services
+          .AddTypeRegistrations<TypeRegistrationsResolver>()
+          .Validate<TypeRegistrationRulesResolver>(); // Call the validate last!
+    }
+
+    public void Configure(IApplicationBuilder app, ...)
+    {
+      ...
+    }
+}
+```
+
+When an application is split into multiple layers (horizontal) or into multiple domains (vertical), only the `TypeRegistrationsResolver` and `TypeRegistrationRulesResolver` are adjusted accordingly.
+
+![Setting up an application architecture in multiple domains](./docs/Peereflits.Shared.Dependencies-Multi-domain%20Architecture.png)<br />*Establishment of an application architecture in multiple domains | vertical split*
+
+This then becomes:
+
+in *MyOwn.Services.Api.dll*
+
+``` csharp
+namespace MyOwn.Services.Api;
+
+internal class TypeRegistrationsResolver : IProvideTypeRegistrations
+{
+    public IEnumerable<TypeRegistration> Execute()
+    {
+        var registrations = new List<IProvideTypeRegistrations>
+                            {
+                                new MyOwn.Logic.Domain1.TypeRegistrations(),
+                                new MyOwn.Logic.Domain2.TypeRegistrations(),
+                                new MyOwn.Logic.DomainN.TypeRegistrations(),
+                                new MyOwn.Services.Api.TypeRegistrations()
+                            };
+
+        return registrations.SelectMany(x=>x.Execute()).ToList();
+    }
+}
+
+internal class TypeRegistrationRulesResolver : IProvideTypeRegistrationRules
+{
+    public IEnumerable<TypeRegistrationRule> Execute()
+    {
+        var rules = new List<IProvideTypeRegistrationRules>
+                        {
+                            new MyOwn.Logic.Domain1.TypeRegistrationRules(),
+                            new MyOwn.Logic.Domain2.TypeRegistrationRules(),
+                            new MyOwn.Logic.DomainN.TypeRegistrationRules(),
+                            new MyOwn.Services.Api.TypeRegistrationRules()
+                        };
+
+        return rules.SelectMany(x=>x.Execute()).ToList();
+    }
+}
+```
+
+Othes changes should not be necessary.
 
 
 ---
