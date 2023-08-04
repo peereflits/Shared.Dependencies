@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <AssemblyName>Peereflits.Shared.Dependencies.Extensions</AssemblyName>
     <RootNamespace>Peereflits.Shared.Dependencies</RootNamespace>
+    <TargetFrameworks>netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
+    <VersionPrefix>1.0.1</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup>
     <ApplicationIcon>..\Solution Items\favicon.ico</ApplicationIcon>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
     <LangVersion>latest</LangVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,15 +21,16 @@
 
   <PropertyGroup Label="Package">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageIcon>PackageIcon.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/peereflits/Shared.Dependencies.git?path=%2FREADME.md&amp;_a=preview</PackageProjectUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/peereflits/Shared.Dependencies.git</RepositoryUrl>
-    <Title>Peereflits.Shared.Dependencies.Extensions package</Title>
     <PackageDescription>
 Peereflits.Shared.Dependencies.Extensions is an extension library for working with DI.
-This component is a shared infrastructure library of Peereflits.
+This is a component of Peereflits.Shared.Dependencies.
     </PackageDescription>
+    <PackageIcon>PackageIcon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/peereflits/Shared.Dependencies</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/peereflits/Shared.Dependencies</RepositoryUrl>
+    <Title>Peereflits.Shared.Dependencies.Extensions package</Title>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -44,12 +46,14 @@ This component is a shared infrastructure library of Peereflits.
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " Version="3.1.32" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Content Include="..\Solution Items\PackageIcon.png" Link="Properties\PackageIcon.png" Pack="true" PackagePath="\" />
+    <None Include="..\Solution Items\PackageIcon.png" Link="Properties\PackageIcon.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

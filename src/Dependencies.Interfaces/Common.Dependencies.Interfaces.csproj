@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <AssemblyName>Peereflits.Shared.Dependencies.Interfaces</AssemblyName>
     <RootNamespace>Peereflits.Shared.Dependencies</RootNamespace>
+    <TargetFrameworks>netstandard2.1;net6.0;net7.0</TargetFrameworks>
+    <VersionPrefix>1.0.1</VersionPrefix>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -21,14 +22,15 @@
   <PropertyGroup Label="Package">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageIcon>PackageIcon.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/peereflits/Shared.Dependencies.git?path=%2FREADME.md&amp;_a=preview</PackageProjectUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/peereflits/Shared.Dependencies.git</RepositoryUrl>
-    <Title>Peereflits.Shared.Dependencies.Extensions package</Title>
     <PackageDescription>
 Peereflits.Shared.Dependencies.Interfaces is an interface library for working with DI.
-This component is a shared infrastructure library of Peereflits.
+This is a component of Peereflits.Shared.Dependencies.
     </PackageDescription>
+    <PackageProjectUrl>https://github.com/peereflits/Shared.Dependencies</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/peereflits/Shared.Dependencies</RepositoryUrl>
+    <Title>Peereflits.Shared.Dependencies.Extensions package</Title>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -45,7 +47,8 @@ This component is a shared infrastructure library of Peereflits.
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Content Include="..\Solution Items\PackageIcon.png" Link="Properties\PackageIcon.png" Pack="true" PackagePath="\" />
+    <None Include="..\Solution Items\PackageIcon.png" Link="Properties\PackageIcon.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
