@@ -12,13 +12,13 @@ public static class RegisterTypeRegistrations
         IEnumerable<TypeRegistration> registrations = new TTypeRegistrations().Execute();
         foreach (TypeRegistration registration in registrations)
         {
-            if (registration.Service == null)
+            if (registration is { Service: null, ImplementationFactory: not null })
             {
-                services.AddService(registration.Lifetime, registration.Interface, registration.ImplementationFactory);
+                services.AddService(registration.Lifetime, registration.Interface, implementationFactory: registration.ImplementationFactory);
             }
-            else
+            if (registration is { Service: not null, ImplementationFactory: null })
             {
-                services.AddService(registration.Lifetime, registration.Interface, registration.Service);
+                services.AddService(registration.Lifetime, registration.Interface, implementationType: registration.Service);
             }
         }
 

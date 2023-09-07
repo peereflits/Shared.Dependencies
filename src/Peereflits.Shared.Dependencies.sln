@@ -1,19 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29215.179
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Dependencies.Interfaces", "Dependencies.Interfaces\Common.Dependencies.Interfaces.csproj", "{F100E3A0-F981-46B6-A051-E57CC077257C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Interfaces", "Dependencies.Interfaces\Dependencies.Interfaces.csproj", "{F100E3A0-F981-46B6-A051-E57CC077257C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9D1274EB-F4FE-40E3-8407-D3F41C751F93}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\favicon.ico = Solution Items\favicon.ico
 		Solution Items\PackageIcon.png = Solution Items\PackageIcon.png
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Dependencies.Extensions", "Dependencies.Extensions\Common.Dependencies.Extensions.csproj", "{7CD03009-8EEC-40F3-AC9B-3A0BA18DF7DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Extensions", "Dependencies.Extensions\Dependencies.Extensions.csproj", "{7CD03009-8EEC-40F3-AC9B-3A0BA18DF7DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Dependencies.Extensions.Tests", "Dependencies.Extensions.Tests\Common.Dependencies.Extensions.Tests.csproj", "{C2644E46-305A-44CC-98ED-6FDD418F87D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dependencies.Extensions.Tests", "Dependencies.Extensions.Tests\Dependencies.Extensions.Tests.csproj", "{C2644E46-305A-44CC-98ED-6FDD418F87D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

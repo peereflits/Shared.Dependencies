@@ -19,8 +19,8 @@ public abstract class TypeRegistration
     }
 
     public Type Interface { get; }
-    public Type Service { get; }
-    public Func<IServiceProvider, object> ImplementationFactory { get; }
+    public Type? Service { get; }
+    public Func<IServiceProvider, object>? ImplementationFactory { get; }
     public Lifetime Lifetime { get; }
 }
 

@@ -2,33 +2,22 @@
   
   <PropertyGroup>
     <AssemblyName>Peereflits.Shared.Dependencies.Extensions.Test</AssemblyName>
-    <IsPackable>false</IsPackable>
     <RootNamespace>Peereflits.Shared.Dependencies.Extensions.Test</RootNamespace>
     <TargetFrameworks>netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <ApplicationIcon>..\Solution Items\favicon.ico</ApplicationIcon>
-    <LangVersion>latest</LangVersion>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Authors>Peereflits</Authors>
-    <Copyright>No Copyright ©, The Netherlands</Copyright>
     <Description>This is the unit test library of Peereflits.Shared.Dependencies.Extensions.</Description>
-    <Product>Peereflits.Shared.Dependencies</Product>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " Version="3.1.32" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="NSubstitute" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.5.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.0">
@@ -47,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dependencies.Extensions\Common.Dependencies.Extensions.csproj" />
+    <ProjectReference Include="..\Dependencies.Extensions\Dependencies.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

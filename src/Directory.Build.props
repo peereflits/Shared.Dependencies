@@ -1,0 +1,32 @@
+<Project>
+
+  <PropertyGroup>
+    <ApplicationIcon>..\Solution Items\favicon.ico</ApplicationIcon>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Peereflits</Authors>
+    <Copyright>No Copyright &#169;, The Netherlands</Copyright>
+    <Product>Peereflits.Shared.Dependencies</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <VersionPrefix>1.0.1</VersionPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+</Project>
