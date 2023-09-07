@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <AssemblyName>Peereflits.Shared.Dependencies.Extensions.Test</AssemblyName>
-    <RootNamespace>Peereflits.Shared.Dependencies.Extensions.Test</RootNamespace>
+    <AssemblyName>Peereflits.Shared.Dependencies.Extensions.Tests</AssemblyName>
+    <RootNamespace>Peereflits.Shared.Dependencies.Extensions.Tests</RootNamespace>
     <TargetFrameworks>netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
   </PropertyGroup>
 

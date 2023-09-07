@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace Peereflits.Shared.Dependencies.Extensions.Test;
+namespace Peereflits.Shared.Dependencies.Extensions.Tests;
 
 public class ValidateTypeRegistrationsTests
 {
