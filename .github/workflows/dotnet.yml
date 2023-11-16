@@ -13,7 +13,7 @@ on:
 
 env:
   API_KEY : ${{ secrets.PAT_CLASSIC }}
-  DOTNET_VERSION: 7.0.x
+  DOTNET_VERSION: 8.0.x
   DOTNET_SOLUTION: src/Peereflits.Shared.Dependencies.sln
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
         dotnet build ${{ env.DOTNET_SOLUTION }} --configuration Release --no-restore
 
     - name: Run unit tests
-      run: dotnet test **/*.Tests.dll
+      run: dotnet test ${{ env.DOTNET_SOLUTION }} --no-build --verbosity normal
 
     - name: Pack & Push
       run: |
