@@ -15,11 +15,12 @@
 
   <PropertyGroup Label="Package">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageIcon>PackageIcon.png</PackageIcon>
     <PackageDescription>
-Peereflits.Shared.Dependencies.Interfaces is an type-library for working with DI in conjunction with Peereflits.Shared.Dependencies.Extensions.
-This is a component of Peereflits.Shared.Dependencies.
+      Peereflits.Shared.Dependencies.Interfaces is an type-library for working with DI in conjunction with Peereflits.Shared.Dependencies.Extensions.
+      This is a component of Peereflits.Shared.Dependencies.
     </PackageDescription>
+    <PackageIcon>PackageIcon.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/peereflits/Shared.Dependencies</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>

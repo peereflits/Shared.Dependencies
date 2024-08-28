@@ -20,6 +20,7 @@ Peereflits.Shared.Dependencies.Extensions is an implementation library for worki
 This is a component of Peereflits.Shared.Dependencies.
     </PackageDescription>
     <PackageIcon>PackageIcon.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/peereflits/Shared.Dependencies</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
