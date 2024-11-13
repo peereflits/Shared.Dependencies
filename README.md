@@ -296,8 +296,8 @@ Othes changes should not be necessary.
 
 The libraries supports the following .NET versions:
 1. .NET 6.0
-1. .NET 7.0
 1. .NET 8.0
+1. .NET 9.0
 
 
 ---
